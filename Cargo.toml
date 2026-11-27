@@ -1,0 +1,15 @@
+[package]
+name = "thus"
+version = "0.1.0"
+edition = "2024"
+description = "A test DSL that separates the behavior under test from setup and observation"
+license = "MIT"
+repository = "https://github.com/ras0q/thus"
+readme = "README.md"
+[lib]
+proc-macro = true
+
+[dependencies]
+proc-macro2 = "1"
+quote = "1"
+syn = { version = "2", default-features = false, features = ["full", "parsing", "printing", "proc-macro", "clone-impls"] }
