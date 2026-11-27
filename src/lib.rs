@@ -116,9 +116,11 @@ fn expand_stmt(stmt: &Stmt, report: &Report) -> syn::Result<(TokenStream2, bool)
             let init = local.init.as_ref().ok_or_else(|| {
                 syn::Error::new_spanned(local, "observation requires an initializer")
             })?;
-            // An explicit `let-else` is left as written.
-            if init.diverge.is_some() {
-                return Ok((local.to_token_stream(), false));
+            if let Some((else_token, _)) = &init.diverge {
+                return Err(syn::Error::new_spanned(
+                    else_token,
+                    "a pattern mismatch already fails; remove `else`",
+                ));
             }
             Ok((
                 let_else(&local.attrs, &local.pat, &init.expr, report, "Pattern"),
